@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="task_detail_wrapper">
+    <div class="task__content">
+        <h1 class="task__title"> {{task.title}}</h1>
+        <p class='task__text'>Условие: {{task.text}}</p>
+        {% if task.image %}
+        <div class="wrapper_img">
+            <a download href="../../{{ task.image }}" alt="">Скачать картинку</a>
+        </div>
+        {% endif %}
+    </div>
+    {% include 'includes/form_check_task.html' %}
+</div>
+{% endblock %}

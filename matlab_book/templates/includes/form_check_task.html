@@ -1,0 +1,28 @@
+<div class="form_check_task">
+    <p>Отпрвить на првоверку решение! (.m)</p>
+    <form enctype="multipart/form-data" method="post" action="{% url 'tasks:task_check' task.slug%}">
+        {% csrf_token %}
+        {% if error_text %}
+        <span class='flex-center'> {{error_text}}</span>
+        {% endif %}
+
+        {% if not flag %}
+        <ul class="flex-center ">
+
+            <li class='form__item'>
+                <input type="file" name='file'>
+            </li>
+            <li class='form__item'>
+                <input type="submit" value="Отправить">
+            </li>
+
+        </ul>
+        <p class='flex-center'>Параметры для теста: {{args}}</p>
+        <span class='flex-center'>Вывод вашей функции: {{student_res}}</span>
+        <span class='flex-center'>Система ожидала: {{admin_res}}</span>
+        {% else %}
+
+        {% endif %}
+
+    </form>
+</div>

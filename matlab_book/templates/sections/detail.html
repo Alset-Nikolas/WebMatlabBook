@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section_detail_wrapper">
+    <span>Тут будет краткая теория по теме: {{section.title}}!</span>
+</div>
+<a href="{% url 'sections:section_delete' section.slug %}" class='a_hover'>
+    <span>Удалить</span>
+</a>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+    {% for section_item in sections %}
+    <li class="flex-between sections__items">
+        <span>№{{section_item.number_lesson}} </span>
+        <a href="{% url 'sections:section_detail' section_item.slug %}" class='a_hover'>
+            <span class="sections__title ">{{section_item.title}}</span>
+        </a>
+        <a href="{% url 'tasks:task_list' section_item.slug %}" class='a_hover'>
+            <span>Практика</span>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'sections:section_create' %}" class='a_hover'>
+    <span>Добавить</span>
+</a>
+{% endblock %}

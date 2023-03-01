@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<ul class="flex-between mg_bt_10">
+    <li class="tasks__header_items tasks__title">Номер задания</li>
+    <li class="tasks__header_items tasks__title">Название</li>
+    <li class="tasks__header_items tasks__title">Сложность</li>
+</ul>
+<ul>
+    {% for task_item in tasks %}
+    <li class="tasks__items">
+        <div class="task_wrapper flex-between ">
+            <span>№ {{forloop.counter}} </span>
+
+            <a href="{% url 'tasks:task_detail' task_item.slug %}" class='a_hover'>
+                <span class="sections__title ">{{task_item.title}}</span>
+            </a>
+            <span>{{task_item.complexity}} </span>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'tasks:task_create'  %}" class='a_hover'>
+    <span>Добавить</span>
+</a>
+{% endblock %}
