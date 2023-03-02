@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <ul>
+    {% if sections|length > 0 %}
     {% for section_item in sections %}
     <li class="flex-between sections__items">
         <span>№{{section_item.number_lesson}} </span>
@@ -12,8 +13,19 @@
         </a>
     </li>
     {% endfor %}
+    {% else %}
+    <div class="flex-center">
+        Раздевол пока нет!
+    </div>
+    {% endif %}
 </ul>
-<a href="{% url 'sections:section_create' %}" class='a_hover'>
-    <span>Добавить</span>
-</a>
+{% if request.user.is_authenticated and request.user.is_superuser%}
+<div class="flex-center">
+    <a href="{% url 'sections:section_create' %}" class='a_hover'>
+        <span>Добавить раздел</span>
+    </a>
+</div>
+{% endif %}
+
+
 {% endblock %}

@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'tasks:task_create' %}">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-secondary">Save</button>
-</form>
+<div class="registration__wrapper flex-center">
+    <form method="POST" enctype="multipart/form-data" class="registration__form" action="{% url 'tasks:task_create' %}">
+        {% csrf_token %}
+        {% for f in form %}
+        <p>
+            <label class='register__form-label flex-between' for="{{ f.id_for_label}}">
+                {{f.label}}: {{ f }}
+            </label>
+        </p>
+        <div>
+            {{f.errors}}
+        </div>
+        {% endfor %}
+        <div class="btn__contaier flex-center">
+            <button type="submit" class="btn">Создать задачу!</button>
+        </div>
+
+    </form>
+</div>
 {% endblock %}
+
+

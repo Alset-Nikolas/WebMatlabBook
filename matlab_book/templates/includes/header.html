@@ -1,5 +1,5 @@
 {% load static %}
-<div class='header_content'>
+<div class='header_content flex-between'>
   <section>
     <div class="header__logo flex">
       <a href="{% url 'sections:sections_list' %}" class="logo">
@@ -11,5 +11,21 @@
         </a>
       </div>
     </div>
+  </section>
+  <section>
+    {% if request.user.is_authenticated %}
+    <div class=" logo__text header__auth flex-center">
+      {% if request.user.is_superuser %}
+        <span>Админ:</span>
+      {% endif %}
+      <span>{{ user.username}}</span>
+      <a href="{% url 'users:user_logout' %}">Выход</a>
+    </div>
+    {% else %}
+    <div class=" logo__text header__auth flex-center">
+      <a href="{% url 'users:user_registration' %}">Регистрация</a>
+      <a href="{% url 'users:user_login' %}">Вход</a>
+    </div>
+    {% endif %}
   </section>
 </div>

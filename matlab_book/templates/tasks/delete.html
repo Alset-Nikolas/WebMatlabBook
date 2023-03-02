@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section__detail__delete__weappe flex-center">
+  <form action="" method="post">{% csrf_token %}
+    <p>Вы точно хотите удалить задачу! {{task.title}}</p>
+    <input type="submit" value="Удалить" class='btn ' />
+  </form>
+</div>
+{% endblock %}

@@ -16,6 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ALLOWED_HOSTS = ["*"]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -27,8 +28,6 @@ SECRET_KEY = (
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     "users",
     "sections",
     "tasks",
+    "permissions",
 ]
 
 MIDDLEWARE = [
@@ -124,9 +124,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/staticfiles/"
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -136,12 +133,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 import os
 from pathlib import Path
+
 from oct2py import Oct2Py, octave
 
 
 oc = Oct2Py()
 BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR_MATLAB_SCRIPTS = os.path.join(BASE_DIR, "staticfiles")
+BASE_DIR_MATLAB_SCRIPTS = os.path.join(BASE_DIR, "media")
 BASE_DIR_MATLAB_STUDENTS = os.path.join(
     BASE_DIR_MATLAB_SCRIPTS,
     "tasks",
@@ -151,5 +149,18 @@ octave.addpath(BASE_DIR_MATLAB_SCRIPTS)
 
 
 BASE_DIR_TEST_MATLAB_SCRIPTS = os.path.join(
-    BASE_DIR, "staticfiles", "tasks", "tests"
+    BASE_DIR, "media", "tasks", "tests"
 )
+
+LOGIN_REDIRECT_URL = "/"
+
+# static
+STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# media
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"

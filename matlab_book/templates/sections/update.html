@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="section_detail_wrapper">
-    <form action="" method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update" />
+<div class="registration__wrapper flex-center">
+    <form method="POST" enctype="multipart/form-data" class="registration__form" action="{% url 'tasks:task_create' %}">
+        {% csrf_token %}
+        {% for f in form %}
+        <p>
+            <label class='register__form-label flex-between' for="{{ f.id_for_label}}">
+                {{f.label}}: {{ f }}
+            </label>
+        </p>
+        <div>
+            {{f.errors}}
+        </div>
+        {% endfor %}
+        <div class="btn__contaier flex-center">
+            <button type="submit" class="btn">Регистрация</button>
+        </div>
+
     </form>
 </div>
-<a href="{% url 'sections:section_delete' section.slug%}">qwweqe</a>
 {% endblock %}

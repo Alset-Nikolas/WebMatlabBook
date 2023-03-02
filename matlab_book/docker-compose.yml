@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  backend:
+    container_name: web_matlab_contaier
+    build:
+      context: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - static_volume:/home/matlab_book/staticfiles
+      - media_volume:/home/matlab_book/mediafiles
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    # sudo docker-compose -f docker-compose.yml build
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/matlab_book/staticfiles
+      - media_volume:/home/matlab_book/mediafiles
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+volumes:
+  static_volume:
+  media_volume:

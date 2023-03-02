@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="registration__wrapper flex-center">
+    <form method="POST" enctype="multipart/form-data" class="registration__form" action="">
+        {% csrf_token %}
+        {% for f in form %}
+        <p>
+            <label class='register__form-label flex-between' for="{{ f.id_for_label}}">
+                {{f.label}}: {{ f }}
+            </label>
+        </p>
+        <div>
+            {{f.errors}}
+        </div>
+        {% endfor %}
+        <div class="btn__contaier flex-center">
+            <button type="submit" class="btn">Регистрация</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

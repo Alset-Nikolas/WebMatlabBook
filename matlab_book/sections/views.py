@@ -12,6 +12,7 @@ from django.views.generic import (
 import typing as t
 from .forms import SectionForm
 from django.urls import reverse_lazy
+from permissions.permissions import SuperUserPermission
 
 
 class SectionsView(ListView):
@@ -27,7 +28,7 @@ class SectionsView(ListView):
         return Sections.objects.order_by("number_lesson").all()
 
 
-class CreateSectionsView(CreateView):
+class CreateSectionsView(SuperUserPermission, CreateView):
     form_class = SectionForm
     template_name = "sections/create_section.html"
 
@@ -42,7 +43,7 @@ class DetailSectionView(DetailView):
         return get_object_or_404(Sections, slug=slug)
 
 
-class UpdateSectionView(UpdateView):
+class UpdateSectionView(SuperUserPermission, UpdateView):
     model = Sections
     template_name = "sections/update.html"
     form_class = SectionForm
@@ -53,7 +54,7 @@ class UpdateSectionView(UpdateView):
         return get_object_or_404(Sections, slug=slug)
 
 
-class SectionDeleteView(DeleteView):
+class SectionDeleteView(SuperUserPermission, DeleteView):
     model = Sections
     template_name = "sections/delete.html"
     success_url = reverse_lazy("sections:sections_list")

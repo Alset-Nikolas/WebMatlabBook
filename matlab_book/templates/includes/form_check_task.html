@@ -1,5 +1,25 @@
+{% load static %}
+{% if task.path_script and task.path_test %}
 <div class="form_check_task">
-    <p>Отпрвить на првоверку решение! (.m)</p>
+    <div class="form_check_help_box flex">
+        <div class="form_check_help_text">
+            <h3>Правила оформления:</h3>
+            <p>Отпрвить на првоверку решение, может только авторизованный пользователь.</p>
+            <p>Система принимает на вход файл формата .m</p>
+            <p>Файл должен состоять из функции, которая принимает параметры для текущей задачи.</p>
+            <p>Название файла должно совпадать с название вашей функции..</p>
+            <h4>Пример:</h4>
+            <span>Нужно написать функцию сложения 2 чисел:</span>
+        </div>
+        <div class="form_check_help_img">
+            <img src="{% static '/img/help_img.png' %}" alt="">
+        </div>
+
+
+    </div>
+
+    {% if request.user.is_authenticated %}
+
     <form enctype="multipart/form-data" method="post" action="{% url 'tasks:task_check' task.slug%}">
         {% csrf_token %}
         {% if error_text %}
@@ -7,22 +27,28 @@
         {% endif %}
 
         {% if not flag %}
-        <ul class="flex-center ">
+        <ul class="flex-center check_task_wrapper_box">
 
-            <li class='form__item'>
-                <input type="file" name='file'>
+            <li class='form__item item_choise_file'>
+                <input type="file" name='file' class='btn'>
             </li>
             <li class='form__item'>
-                <input type="submit" value="Отправить">
+                <input type="submit" value="Отправить" class='btn'>
             </li>
 
         </ul>
         <p class='flex-center'>Параметры для теста: {{args}}</p>
         <span class='flex-center'>Вывод вашей функции: {{student_res}}</span>
         <span class='flex-center'>Система ожидала: {{admin_res}}</span>
-        {% else %}
-
         {% endif %}
 
     </form>
+    {% else %}
+    <p class='flex-center'>Нужно авторизоваться для проверки решения!</p>
+    {% endif %}
+
+
 </div>
+{% else %}
+<p class="flex-center">Тестов пока нет!</p>
+{% endif %}

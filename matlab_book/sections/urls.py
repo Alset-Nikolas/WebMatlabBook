@@ -12,22 +12,22 @@ app_name = "sections"
 
 urlpatterns = [
     path(
-        "sections/create",
+        "sections/create/",
         CreateSectionsView.as_view(),
         name="section_create",
     ),
     path(
-        "sections/<slug:section_slug>",
+        "sections/<slug:section_slug>/",
         DetailSectionView.as_view(),
         name="section_detail",
     ),
     path(
-        "sections/<slug:section_slug>/update",
+        "sections/<slug:section_slug>/update/",
         UpdateSectionView.as_view(),
         name="section_update",
     ),
     path(
-        "sections/<slug:section_slug>/delete",
+        "sections/<slug:section_slug>/delete/",
         SectionDeleteView.as_view(),
         name="section_delete",
     ),

@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
+<a href="{% url 'sections:sections_list' %}" class='a_hover link_to_sections_list'>Назад к списку задач</a>
 <div class="section_detail_wrapper">
     <span>Тут будет краткая теория по теме: {{section.title}}!</span>
 </div>
-<a href="{% url 'sections:section_delete' section.slug %}" class='a_hover'>
-    <span>Удалить</span>
-</a>
+{% if request.user.is_authenticated and request.user.is_superuser%}
+
+<div class="flex-center">
+    <div class="section__detail__links flex-between">
+        <a href="{% url 'sections:section_update' section.slug %}" class='a_hover'>
+            <span>Изменить</span>
+        </a>
+        <a href="{% url 'sections:section_delete' section.slug %}" class='a_hover'>
+            <span>Удалить</span>
+        </a>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

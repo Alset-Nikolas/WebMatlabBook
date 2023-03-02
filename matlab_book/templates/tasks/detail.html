@@ -2,15 +2,31 @@
 {% load static %}
 {% block content %}
 <div class="task_detail_wrapper">
+    <a href="{% url 'tasks:task_list' task.section.slug %}" class='a_hover'>Назад к списку задач</a>
     <div class="task__content">
         <h1 class="task__title"> {{task.title}}</h1>
-        <p class='task__text'>Условие: {{task.text}}</p>
+        <h3>Условие: </h3>
+        <div class='task__text'>
+            <pre>{{task.text}}</pre>
+        </div>
         {% if task.image %}
         <div class="wrapper_img">
-            <a download href="../../{{ task.image }}" alt="">Скачать картинку</a>
+            <a download href="../../{{ task.image }}" alt="" class='a_hover'>Скачать картинку</a>
         </div>
         {% endif %}
     </div>
     {% include 'includes/form_check_task.html' %}
+    {% if request.user.is_authenticated and request.user.is_superuser%}
+    <div class="flex-center">
+        <div class="task__detail__links flex-between">
+            <a class='a_hover' href="{% url 'tasks:task_update' task.slug %}">
+                Изменить
+            </a>
+            <a class='a_hover' href="{% url 'tasks:task_delete' task.slug %}">
+                Удалить
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

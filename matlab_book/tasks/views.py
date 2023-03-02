@@ -13,19 +13,26 @@ from django.views.generic import (
 import typing as t
 from .forms import SectionTaskForm, CheckMatlabFileForm
 from .models import SectionTasks
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, get_object_or_404, redirect
 import typing as t
 from oct2py import Oct2Py, octave
 import os
 from django.conf import settings
-import staticfiles.tasks.tests as matlab_tests
+import media.tasks.tests as matlab_tests
 import pkgutil
+from permissions.permissions import SuperUserPermission, UserAuthPermission
 
 
-class CreateTaskView(CreateView):
+class CreateTaskView(SuperUserPermission, CreateView):
     form_class = SectionTaskForm
     template_name = "tasks/create.html"
+
+    def get_success_url(self) -> str:
+        return reverse(
+            "tasks:task_list",
+            kwargs={"section_slug": self.object.section.slug},
+        )
 
 
 class ListTaskView(ListView):
@@ -55,10 +62,52 @@ class DetailTaskView(DetailView):
         return context
 
 
-class CheckTaskView(View):
+class DeleteTaskView(SuperUserPermission, DeleteView):
+    model = SectionTasks
+    template_name = "tasks/delete.html"
+    context_object_name = "task"
+    success_url = reverse_lazy("sections:sections_list")
+
+    def get_object(self):
+        slug = self.kwargs.get("task_slug", "")
+        return get_object_or_404(SectionTasks, slug=slug)
+
+    def get_success_url(self) -> str:
+        return reverse(
+            "tasks:task_list",
+            kwargs={"section_slug": self.object.section.slug},
+        )
+
+
+class UpdateTaskView(SuperUserPermission, UpdateView):
+    model = SectionTasks
+    template_name = "tasks/update.html"
+    form_class = SectionTaskForm
+    context_object_name = "task"
+
+    def get_object(self):
+        slug = self.kwargs.get("task_slug", "")
+        return get_object_or_404(SectionTasks, slug=slug)
+
+    def get_context_data(self, **kwargs: t.Any) -> t.Dict[str, t.Any]:
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+        context["section_slug"] = obj.section.slug
+        return context
+
+    def get_success_url(self):
+        return reverse(
+            "tasks:task_detail", kwargs={"task_slug": self.object.slug}
+        )
+
+
+class CheckTaskView(UserAuthPermission, View):
     def handle_uploaded_file(self, file):
         path_dir_user = os.path.join(
-            settings.BASE_DIR, "staticfiles", "matlab_scripts", "1"
+            settings.BASE_DIR,
+            "staticfiles",
+            "matlab_scripts",
+            str(self.request.user.id),
         )
         if not os.path.exists(path_dir_user):
             os.makedirs(path_dir_user)
@@ -128,9 +177,12 @@ class CheckTaskView(View):
                     context={**context, **test_context},
                 )
         context["error_text"] = "Что-то не так с файлом."
-        print({**context, **test_context})
         return render(
             request,
             "tasks/detail.html",
             context={**context, **test_context},
         )
+
+    def get(self, request, *args, **kwargs):
+        slug = self.kwargs.get("task_slug", "")
+        return redirect("tasks:task_detail", task_slug=slug)
