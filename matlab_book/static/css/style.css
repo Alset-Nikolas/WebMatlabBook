@@ -20,6 +20,10 @@ a {
     text-decoration: none;
 }
 
+.mb15 {
+    margin-bottom: 15px;
+}
+
 .a_hover {
     background:
         linear-gradient(to right,
@@ -162,6 +166,10 @@ form label {
     padding: 10px;
 }
 
+.discipline__detail__links {
+    width: 300px;
+}
+
 /* sections */
 .sections__items {
     padding-bottom: 10px;
@@ -247,6 +255,14 @@ form label {
     width: 33%;
 }
 
+.task_column-sm {
+    width: 10%;
+}
+
+.task_column-bg {
+    width: 80%;
+}
+
 /* registration */
 
 
@@ -265,4 +281,10 @@ form label {
 .form_check_help_text,
 .form_check_help_img {
     margin-bottom: 30px;
+}
+
+@media screen and (max-width: 800px) {
+    .form_check_help_box {
+        flex-direction: column;
+    }
 }

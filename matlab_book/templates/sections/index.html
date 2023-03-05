@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{% url 'disciplines:disciplines_list' %}" class='a_hover link_to_sections_list'>Назад к списку дисциплин</a>
+<a href="{% url 'disciplines:disciplines_list' %}" class='a_hover link_to_sections_list mb15'>Назад к списку
+    дисциплин</a>
 <div class="sections__header flex-between">
     <div class="flex-center">
         <h3 class="itndx__title">Темы: {{discipline.title}}</h3>
@@ -16,26 +17,26 @@
 
 <div class="sections__table">
     <ul class="flex-between mg_bt_10 tasks__headers">
-        <li class="tasks__header_items tasks__title  task_column flex-center">Номер</li>
-        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
-        <li class="tasks__header_items tasks__title  task_column flex-center">Задачки</li>
+        <li class="tasks__header_items tasks__title  task_column-sm flex-center">Номер</li>
+        <li class="tasks__header_items tasks__title  task_column-bg flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column-sm flex-center">Задачки</li>
     </ul>
     <ul>
         {% if sections|length > 0 %}
         {% for section_item in sections %}
         <li class="sections__items">
             <ul class="flex-between">
-                <li class="task_column flex-center">
+                <li class="task_column-sm flex-center">
                     <p>
                         №{{section_item.number_lesson}}
                     </p>
                 </li>
-                <li class="task_column flex-center">
+                <li class="task_column-bg flex-center">
                     <a href="{% url 'sections:section_detail' section_item.slug %}" class='a_hover'>
                         <span class="sections__title ">{{section_item.title}}</span>
                     </a>
                 </li>
-                <li class="task_column flex-center">
+                <li class="task_column-sm flex-center">
                     <a href="{% url 'tasks:task_list' section_item.slug %}" class='a_hover'>
                         <span>Практика</span>
                     </a>
@@ -66,24 +67,24 @@
 </div>
 <div class="sections__table">
     <ul class="flex-between mg_bt_10 tasks__headers">
-        <li class="tasks__header_items tasks__title  task_column flex-center">Номер</li>
-        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
-        <li class="tasks__header_items tasks__title  task_column flex-center">Сложность</li>
+        <li class="tasks__header_items tasks__title  task_column-sm flex-center">Номер</li>
+        <li class="tasks__header_items tasks__title  task_column-bg flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column-sm flex-center">Сложность</li>
     </ul>
     <ul>
         {% if labs|length > 0 %}
         {% for lab_item in labs %}
         <li class="labs__items">
             <ul class="flex-between">
-                <li class='task_column flex-center'>
+                <li class='task_column-sm flex-center'>
                     <p>№ {{forloop.counter}} </p>
                 </li>
-                <li class="task_column flex-center">
+                <li class="task_column-bg flex-center">
                     <a href="{% url 'tasks:task_detail' lab_item.slug %}" class='a_hover'>
                         <span class="sections__title ">{{lab_item.title}}</span>
                     </a>
                 </li>
-                <li class="task_column flex-center">
+                <li class="task_column-sm flex-center">
                     <span class="sections__title ">{{lab_item.complexity}}</span>
                 </li>
 

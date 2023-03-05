@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="task_detail_wrapper">
-    <a href="{% url 'tasks:task_list' task.section.slug %}" class='a_hover'>Назад к списку задач</a>
+    <a href="{% url 'tasks:task_list' task.section.slug %}" class='a_hover mb15'>Назад к списку задач</a>
     <div class="task__content">
         <h1 class="task__title"> {{task.title}}</h1>
         <h3>Условие: </h3>
