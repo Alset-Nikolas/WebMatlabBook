@@ -15,7 +15,7 @@ COPY . /home/matlab_book/
 ENV PYTHONPATH "${PYTHONPATH}:/home/matlab_book"
 
 
-
+EXPOSE 8000
 RUN chmod a+x  /home/matlab_book/docker-entrypoint.sh
 
 ENTRYPOINT ["/home/matlab_book/docker-entrypoint.sh"]

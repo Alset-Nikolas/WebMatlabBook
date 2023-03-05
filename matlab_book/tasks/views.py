@@ -19,9 +19,14 @@ import typing as t
 from oct2py import Oct2Py, octave
 import os
 from django.conf import settings
-import media.tasks.tests as matlab_tests
 import pkgutil
 from permissions.permissions import SuperUserPermission, UserAuthPermission
+import os
+from multiprocessing import Process
+from datetime import datetime, timedelta
+import time
+import signal
+from threading import Thread
 
 
 class CreateTaskView(SuperUserPermission, CreateView):
@@ -58,6 +63,7 @@ class DetailTaskView(DetailView):
         context = super().get_context_data(**kwargs)
         obj = self.get_object()
         image = str(obj.image)
+        context["flag"] = False
         context["img"] = image[len("staticfiles/") :] if image else None
         return context
 
@@ -100,12 +106,16 @@ class UpdateTaskView(SuperUserPermission, UpdateView):
             "tasks:task_detail", kwargs={"task_slug": self.object.slug}
         )
 
+    def form_valid(self, form: SectionTaskForm):
+        x = form.save()
+        return super().form_valid(form)
+
 
 class CheckTaskView(UserAuthPermission, View):
     def handle_uploaded_file(self, file):
         path_dir_user = os.path.join(
             settings.BASE_DIR,
-            "staticfiles",
+            "mediafiles",
             "matlab_scripts",
             str(self.request.user.id),
         )
@@ -120,38 +130,67 @@ class CheckTaskView(UserAuthPermission, View):
 
     def add_models_test(self, task):
         path_test = settings.BASE_DIR_TEST_MATLAB_SCRIPTS
+        print("path_test", path_test)
         for module_finder, name, ispkg in pkgutil.iter_modules(
             path=[str(path_test)]
         ):
             file_name = str(task.path_test).split("/")[-1]
+            print("file_name", file_name)
             if file_name and name == file_name[:-3]:
                 mod = module_finder.find_module(name).load_module(name)
                 return mod.generate
 
+    def go_matlab_scripts(
+        self, teacher_script_path, student_script_path, args, context
+    ):
+        print("context", context)
+        context["args"] = args
+        context["admin_res"] = octave.feval(
+            teacher_script_path,
+            *args,
+        )
+        context["student_res"] = octave.feval(
+            student_script_path,
+            *args,
+        )
+        print("context", context)
+
     def check_matlab(self, file_student_file, task):
         generation_function = self.add_models_test(task)
         context = dict()
+        N = 100
+        context["q_tests_all"] = N
+        context["q_tests"] = N
+        n = 0
         if not generation_function:
             context["err_msg"] = "Тестов пока нету!"
             return True, context
 
         try:
-            for _ in range(10):
+            octave.timeout = 0.1
+
+            for n in range(N):
+
                 args = generation_function()
-                context["args"] = args
-                context["admin_res"] = octave.feval(
-                    str(task.path_script), *args
-                )
-                context["student_res"] = octave.feval(
-                    str(file_student_file), *args
+                self.go_matlab_scripts(
+                    os.path.join(settings.MEDIA_ROOT, str(task.path_script)),
+                    str(file_student_file),
+                    args,
+                    context,
                 )
                 if str(context["admin_res"]) != str(context["student_res"]):
                     context["err_msg"] = "Ответ не совпал"
+                    context["q_tests"] = n
                     return False, context
+                else:
+                    print("admin_res", context["admin_res"])
+                    print("student_res", context["student_res"])
             return True, context
 
         except BaseException as err:
             print(err)
+            context["q_tests"] = n
+            context["student_res"] = str(err)
             context["err_msg"] = "Что-то пошло не так"
         return False, context
 
@@ -160,10 +199,9 @@ class CheckTaskView(UserAuthPermission, View):
             SectionTasks, slug=self.kwargs.get("task_slug", "")
         )
         form = CheckMatlabFileForm(request.POST, request.FILES)
-        context = {"task": task, "error_text": "Все Ок", "flag": False}
+        context = {"task": task, "error_text": None, "flag": False}
         test_context = {}
         if form.is_valid():
-            # octave.feval("/matlab_sctepts/myScript", 7)
             path_student_file = self.handle_uploaded_file(
                 file=request.FILES.get("file")
             )

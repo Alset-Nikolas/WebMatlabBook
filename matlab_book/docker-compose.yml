@@ -10,7 +10,8 @@ services:
       - .env
     volumes:
       - static_volume:/home/matlab_book/staticfiles
-      - media_volume:/home/matlab_book/mediafiles
+      - media_volume:/home/matlab_book/matlab_scripts
+      - .:/home/matlab_book
     expose:
       - 8000
     ports:
@@ -20,7 +21,8 @@ services:
     build: ./nginx
     volumes:
       - static_volume:/home/matlab_book/staticfiles
-      - media_volume:/home/matlab_book/mediafiles
+      - media_volume:/home/matlab_book/matlab_scripts
+      # - .:/home/matlab_book
     ports:
       - 80:80
     depends_on:

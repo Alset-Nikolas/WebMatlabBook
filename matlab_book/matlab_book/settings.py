@@ -27,7 +27,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 # Application definition
@@ -146,11 +146,16 @@ BASE_DIR_MATLAB_STUDENTS = os.path.join(
     "matlab_scripts",
 )
 octave.addpath(BASE_DIR_MATLAB_SCRIPTS)
+octave.timeout = 0.1
 
-
-BASE_DIR_TEST_MATLAB_SCRIPTS = os.path.join(
-    BASE_DIR, "media", "tasks", "tests"
-)
+if DEBUG:
+    BASE_DIR_TEST_MATLAB_SCRIPTS = os.path.join(
+        BASE_DIR, "media", "tasks", "tests"
+    )
+else:
+    BASE_DIR_TEST_MATLAB_SCRIPTS = os.path.join(
+        BASE_DIR, "mediafiles", "tasks", "tests"
+    )
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -162,5 +167,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # media
+
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "mediafiles"
+MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")

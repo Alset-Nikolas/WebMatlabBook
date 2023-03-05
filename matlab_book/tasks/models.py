@@ -14,17 +14,17 @@ class SectionTasks(models.Model):
     title = models.CharField(max_length=300)
     text = models.TextField(max_length=1500)
     image = models.ImageField(
-        upload_to="media/tasks/img/",
+        upload_to="tasks/img/",
         null=True,
         blank=True,
     )
     path_script = models.FileField(
-        upload_to="media/tasks/matlab_scripts/",
+        upload_to="tasks/matlab_scripts/",
         null=True,
         blank=True,
     )
     path_test = models.FileField(
-        upload_to="media/tasks/tests/",
+        upload_to="tasks/tests/",
         null=True,
         blank=True,
     )

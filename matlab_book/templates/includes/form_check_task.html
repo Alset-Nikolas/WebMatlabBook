@@ -25,6 +25,12 @@
         {% if error_text %}
         <span class='flex-center'> {{error_text}}</span>
         {% endif %}
+        {% if flag %}
+        <span class='flex-center'> Ок</span>
+        {% else %}
+        <span class='flex-center'> NO Ок</span>
+        {% endif %}
+        <span class='flex-center'>Всего пройдено тестов: {{q_tests}} / {{q_tests_all}}</span>
 
         {% if not flag %}
         <ul class="flex-center check_task_wrapper_box">
