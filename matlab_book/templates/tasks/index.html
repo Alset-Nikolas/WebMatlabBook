@@ -17,7 +17,7 @@
 <div class="tasks__table">
     <ul class="flex-between mg_bt_10 tasks__headers">
         <li class="tasks__header_items tasks__title  task_column-sm flex-center">Номер задания</li>
-        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column-bg flex-center">Название</li>
         <li class="tasks__header_items tasks__title  task_column-sm flex-center">Сложность</li>
     </ul>
     <ul>
@@ -27,7 +27,7 @@
                 <li class='task_column-sm flex-center'>
                     <p>№ {{forloop.counter}} </p>
                 </li>
-                <li class='task_column  flex-center'>
+                <li class='task_column-bg  flex-center'>
                     <a href="{% url 'tasks:task_detail' task_item.slug %}" class='a_hover'>
                         <span class="sections__title ">{{task_item.title}}</span>
                     </a>

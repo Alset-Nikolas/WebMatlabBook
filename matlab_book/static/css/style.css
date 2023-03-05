@@ -249,6 +249,7 @@ form label {
 
 .tasks__headers {
     border-bottom: 1px solid slategray;
+    padding: 10px;
 }
 
 .task_column {
