@@ -1,31 +1,102 @@
 {% extends "base.html" %}
 {% block content %}
-<ul>
-    {% if sections|length > 0 %}
-    {% for section_item in sections %}
-    <li class="flex-between sections__items">
-        <span>№{{section_item.number_lesson}} </span>
-        <a href="{% url 'sections:section_detail' section_item.slug %}" class='a_hover'>
-            <span class="sections__title ">{{section_item.title}}</span>
-        </a>
-        <a href="{% url 'tasks:task_list' section_item.slug %}" class='a_hover'>
-            <span>Практика</span>
-        </a>
-    </li>
-    {% endfor %}
-    {% else %}
+<a href="{% url 'disciplines:disciplines_list' %}" class='a_hover link_to_sections_list'>Назад к списку дисциплин</a>
+<div class="sections__header flex-between">
     <div class="flex-center">
-        Раздевол пока нет!
+        <h3 class="itndx__title">Темы: {{discipline.title}}</h3>
+    </div>
+    {% if request.user.is_authenticated and request.user.is_superuser%}
+    <div>
+        <a href="{% url 'sections:section_create' %}" class='a_hover a_admin'>
+            <span>Добавить раздел</span>
+        </a>
     </div>
     {% endif %}
-</ul>
-{% if request.user.is_authenticated and request.user.is_superuser%}
-<div class="flex-center">
-    <a href="{% url 'sections:section_create' %}" class='a_hover'>
-        <span>Добавить раздел</span>
-    </a>
 </div>
-{% endif %}
 
+<div class="sections__table">
+    <ul class="flex-between mg_bt_10 tasks__headers">
+        <li class="tasks__header_items tasks__title  task_column flex-center">Номер</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Задачки</li>
+    </ul>
+    <ul>
+        {% if sections|length > 0 %}
+        {% for section_item in sections %}
+        <li class="sections__items">
+            <ul class="flex-between">
+                <li class="task_column flex-center">
+                    <p>
+                        №{{section_item.number_lesson}}
+                    </p>
+                </li>
+                <li class="task_column flex-center">
+                    <a href="{% url 'sections:section_detail' section_item.slug %}" class='a_hover'>
+                        <span class="sections__title ">{{section_item.title}}</span>
+                    </a>
+                </li>
+                <li class="task_column flex-center">
+                    <a href="{% url 'tasks:task_list' section_item.slug %}" class='a_hover'>
+                        <span>Практика</span>
+                    </a>
+                </li>
+            </ul>
+
+        </li>
+        {% endfor %}
+        {% else %}
+        <div class="flex-center">
+            Раздевол пока нет!
+        </div>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="sections__header flex-between">
+    <div class="flex-center">
+        <h3 class="itndx__title">Лабораторные работы:</h3>
+    </div>
+    {% if request.user.is_authenticated and request.user.is_superuser%}
+    <div>
+        <a href="{% url 'tasks:task_create' %}" class='a_hover a_admin'>
+            <span>Добавить лабу</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+<div class="sections__table">
+    <ul class="flex-between mg_bt_10 tasks__headers">
+        <li class="tasks__header_items tasks__title  task_column flex-center">Номер</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Сложность</li>
+    </ul>
+    <ul>
+        {% if labs|length > 0 %}
+        {% for lab_item in labs %}
+        <li class="labs__items">
+            <ul class="flex-between">
+                <li class='task_column flex-center'>
+                    <p>№ {{forloop.counter}} </p>
+                </li>
+                <li class="task_column flex-center">
+                    <a href="{% url 'tasks:task_detail' lab_item.slug %}" class='a_hover'>
+                        <span class="sections__title ">{{lab_item.title}}</span>
+                    </a>
+                </li>
+                <li class="task_column flex-center">
+                    <span class="sections__title ">{{lab_item.complexity}}</span>
+                </li>
+
+            </ul>
+
+        </li>
+        {% endfor %}
+        {% else %}
+        <div class="flex-center">
+            Лабораторных пока нет!
+        </div>
+        {% endif %}
+    </ul>
+</div>
 
 {% endblock %}

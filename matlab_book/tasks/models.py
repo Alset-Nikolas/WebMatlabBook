@@ -29,6 +29,7 @@ class SectionTasks(models.Model):
         blank=True,
     )
     complexity = models.IntegerField()
+    is_laba = models.BooleanField(default=False)
 
     class Meta:
         db_table = "section_tasks"

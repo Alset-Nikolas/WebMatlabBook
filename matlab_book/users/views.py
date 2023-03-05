@@ -17,20 +17,20 @@ from django.views.generic import (
 class LoginUserView(LoginView):
     form_class = LoginUserForm
     template_name = "users/login.html"
-    success_url = reverse_lazy("sections:sections_list")
+    success_url = reverse_lazy("disciplines:disciplines_list")
 
 
 class RegisterUserView(CreateView):
     form_class = RegisterUserForm
     template_name = "users/registration.html"
-    success_url = reverse_lazy("sections:sections_list")
+    success_url = reverse_lazy("disciplines:disciplines_list")
 
     def form_valid(self, form: RegisterUserForm):
         user = form.save()
         login(self.request, user)
-        return redirect("sections:sections_list")
+        return redirect("disciplines:disciplines_list")
 
 
 def logout_user(request):
     logout(request)
-    return redirect("sections:sections_list")
+    return redirect("disciplines:disciplines_list")

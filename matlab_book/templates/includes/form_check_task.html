@@ -18,40 +18,43 @@
 
     </div>
 
-    {% if request.user.is_authenticated %}
+    <div class="flex-center">
+        {% if request.user.is_authenticated %}
+        <form enctype="multipart/form-data" method="post" action="{% url 'tasks:task_check' task.slug%}">
+            {% csrf_token %}
+            {% if error_text %}
+            <span class='flex-center'> {{error_text}}</span>
+            {% endif %}
+            {% if flag %}
+            <span class='flex-center'> Ок</span>
+            {% else %}
+            <span class='flex-center'> NO Ок</span>
+            {% endif %}
+            <span class='flex-center'>Всего пройдено тестов: {{q_tests}} / {{q_tests_all}}</span>
 
-    <form enctype="multipart/form-data" method="post" action="{% url 'tasks:task_check' task.slug%}">
-        {% csrf_token %}
-        {% if error_text %}
-        <span class='flex-center'> {{error_text}}</span>
-        {% endif %}
-        {% if flag %}
-        <span class='flex-center'> Ок</span>
+            {% if not flag %}
+            <ul class="flex-center check_task_wrapper_box">
+
+                <li class='form__item item_choise_file'>
+                    <input type="file" name='file' class='btn'>
+                </li>
+                <li class='form__item'>
+                    <input type="submit" value="Отправить" class='btn'>
+                </li>
+
+            </ul>
+            <p class='flex-center'>Параметры для теста: {{args}}</p>
+            <span class='flex-center'>Вывод вашей функции: {{student_res}}</span>
+            <span class='flex-center'>Система ожидала: {{admin_res}}</span>
+            {% endif %}
+
+        </form>
         {% else %}
-        <span class='flex-center'> NO Ок</span>
+        <p class='flex-center'>Нужно авторизоваться для проверки решения!</p>
         {% endif %}
-        <span class='flex-center'>Всего пройдено тестов: {{q_tests}} / {{q_tests_all}}</span>
+    </div>
 
-        {% if not flag %}
-        <ul class="flex-center check_task_wrapper_box">
 
-            <li class='form__item item_choise_file'>
-                <input type="file" name='file' class='btn'>
-            </li>
-            <li class='form__item'>
-                <input type="submit" value="Отправить" class='btn'>
-            </li>
-
-        </ul>
-        <p class='flex-center'>Параметры для теста: {{args}}</p>
-        <span class='flex-center'>Вывод вашей функции: {{student_res}}</span>
-        <span class='flex-center'>Система ожидала: {{admin_res}}</span>
-        {% endif %}
-
-    </form>
-    {% else %}
-    <p class='flex-center'>Нужно авторизоваться для проверки решения!</p>
-    {% endif %}
 
 
 </div>

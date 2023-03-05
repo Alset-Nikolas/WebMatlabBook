@@ -1,38 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{% url 'sections:sections_list' %}" class='a_hover link_to_sections_list'>Назад к списку задач</a>
-<ul class="flex-between mg_bt_10 tasks__headers">
-    <li class="tasks__header_items tasks__title  task_column flex-center">Номер задания</li>
-    <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
-    <li class="tasks__header_items tasks__title  task_column flex-center">Сложность</li>
-</ul>
-<ul>
-    {% for task_item in tasks %}
-    <li class="tasks__items">
-        <ul class="flex-between">
-            <li class='task_column flex-center'>
-                <p>№ {{forloop.counter}} </p>
-            </li>
-            <li class='task_column  flex-center'>
-                <a href="{% url 'tasks:task_detail' task_item.slug %}" class='a_hover'>
-                    <span class="sections__title ">{{task_item.title}}</span>
-                </a>
-            </li>
-            <li class='task_column  flex-center'>
-                <p>{{task_item.complexity}} </p>
-            </li>
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
-
-
-
-{% if request.user.is_authenticated and request.user.is_superuser%}
-<div class="flex-center">
-    <a href="{% url 'tasks:task_create'  %}" class='a_hover'>
-        <span>Добавить задание</span>
-    </a>
+<a href="{% url 'sections:sections_list' section.discipline.slug %}" class='a_hover link_to_sections_list'>Назад к
+    списку тем</a>
+<div class="task__header flex-between">
+    <div class="flex-center">
+        <h3 class="itndx__title">Список задач:</h3>
+    </div>
+    {% if request.user.is_authenticated and request.user.is_superuser%}
+    <div>
+        <a href="{% url 'tasks:task_create'  %}" class='a_hover a_admin'>
+            <span>Добавить задание</span>
+        </a>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
+<div class="tasks__table">
+    <ul class="flex-between mg_bt_10 tasks__headers">
+        <li class="tasks__header_items tasks__title  task_column flex-center">Номер задания</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Сложность</li>
+    </ul>
+    <ul>
+        {% for task_item in tasks %}
+        <li class="tasks__items">
+            <ul class="flex-between">
+                <li class='task_column flex-center'>
+                    <p>№ {{forloop.counter}} </p>
+                </li>
+                <li class='task_column  flex-center'>
+                    <a href="{% url 'tasks:task_detail' task_item.slug %}" class='a_hover'>
+                        <span class="sections__title ">{{task_item.title}}</span>
+                    </a>
+                </li>
+                <li class='task_column  flex-center'>
+                    <p>{{task_item.complexity}} </p>
+                </li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
 {% endblock %}

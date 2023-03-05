@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="disciplines__header flex-between">
+    <div class="flex-center">
+        <h3 class="itndx__title">Список дисицплин:</h3>
+    </div>
+    {% if request.user.is_authenticated and request.user.is_superuser%}
+    <div>
+        <a href="{% url 'disciplines:discipline_create' %}" class='a_hover a_admin'>
+            <span>Добавить дисциплину</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="disciplines__table">
+    <ul class="flex-between mg_bt_10 tasks__headers">
+        <li class="tasks__header_items tasks__title  task_column flex-center">Номер дисицплины</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Название</li>
+        <li class="tasks__header_items tasks__title  task_column flex-center">Темы</li>
+    </ul>
+    <ul>
+        {% if disciplines|length > 0 %}
+        {% for discipline_item in disciplines %}
+        <li class="disciplines__items">
+            <ul class="flex-between">
+                <li class='task_column flex-center'>
+                    <p>№ {{forloop.counter}} </p>
+                </li>
+                <li class='task_column flex-center'>
+                    <a href="{% url 'disciplines:discipline_detail' discipline_item.slug %}" class='a_hover'>
+                        <span class="disciplines__title ">{{discipline_item.title}}</span>
+                    </a>
+                </li>
+                <li class='task_column flex-center'>
+                    <a href="{% url 'sections:sections_list' discipline_item.slug %}" class='a_hover'>
+                        <span class="disciplines__title ">Содержание</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {% endfor %}
+        {% else %}
+        <div class="flex-center">
+            Дициплин пока нет!
+        </div>
+        {% endif %}
+    </ul>
+</div>
+
+
+
+{% endblock %}

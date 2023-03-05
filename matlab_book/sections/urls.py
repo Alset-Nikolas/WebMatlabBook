@@ -32,7 +32,7 @@ urlpatterns = [
         name="section_delete",
     ),
     path(
-        "",
+        "sections/<slug_discipline>",
         SectionsView.as_view(),
         name="sections_list",
     ),

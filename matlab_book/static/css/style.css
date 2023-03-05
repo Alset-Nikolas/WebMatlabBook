@@ -140,6 +140,28 @@ pre {
     white-space: break-spaces;
 }
 
+form {
+    width: 600px;
+    border: 1px solid;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+form label {
+    margin-bottom: 15px;
+}
+
+.itndx__title {
+    margin-bottom: 30px;
+}
+
+/* disciplines */
+.disciplines__table {
+    margin-bottom: 30px;
+    border: 1px solid;
+    padding: 10px;
+}
+
 /* sections */
 .sections__items {
     padding-bottom: 10px;
@@ -158,7 +180,20 @@ pre {
     margin-bottom: 15px;
 }
 
+.sections__table {
+    margin-bottom: 30px;
+    border: 1px solid;
+}
+
+.labs__items {
+    padding-bottom: 10px;
+}
+
 /* tasks */
+.tasks__table {
+    margin-bottom: 30px;
+    border: 1px solid;
+}
 
 .tasks__items {
     padding-bottom: 10px;
@@ -213,12 +248,7 @@ pre {
 }
 
 /* registration */
-.registration__form {
-    width: 600px;
-    border: 1px solid;
-    padding: 15px;
-    border-radius: 10px;
-}
+
 
 .register__form-label {
     margin-bottom: 15px;

@@ -12,7 +12,9 @@ from django.views.generic import (
 import typing as t
 from .forms import SectionForm
 from django.urls import reverse_lazy
+from disciplines.models import Disciplines
 from permissions.permissions import SuperUserPermission
+from tasks.models import SectionTasks
 
 
 class SectionsView(ListView):
@@ -22,10 +24,25 @@ class SectionsView(ListView):
 
     def get_context_data(self, **kwargs: t.Any) -> t.Dict[str, t.Any]:
         context = super().get_context_data(**kwargs)
+        context["discipline"] = Disciplines.objects.get(
+            slug=self.kwargs.get("slug_discipline", "")
+        )
+        context["labs"] = (
+            SectionTasks.objects.filter(
+                section__discipline=context["discipline"]
+            )
+            .filter(is_laba=True)
+            .all()
+        )
         return context
 
     def get_queryset(self) -> t.Any:
-        return Sections.objects.order_by("number_lesson").all()
+        slug = self.kwargs.get("slug_discipline", "")
+        return (
+            Sections.objects.filter(discipline__slug=slug)
+            .order_by("number_lesson")
+            .all()
+        )
 
 
 class CreateSectionsView(SuperUserPermission, CreateView):

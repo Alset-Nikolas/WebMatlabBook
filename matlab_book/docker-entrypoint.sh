@@ -17,7 +17,7 @@ echo "Create admin"
 python manage.py createsuperuser --email=$DJANGO_SUPERUSER_EMAIL --noinput || echo "admin already created"
 
 echo "start server"
-gunicorn wsgi --bind 0.0.0.0:8000 --workers 3 --threads 2 --timeout 30
+gunicorn wsgi --bind 0.0.0.0:8000 --workers=3 --timeout=5
 
 
 exec "$@"

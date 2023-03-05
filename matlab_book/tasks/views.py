@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import SectionTasks
 from django.views import View
 from django.views.generic import (
     ListView,
@@ -27,6 +26,7 @@ from datetime import datetime, timedelta
 import time
 import signal
 from threading import Thread
+from sections.models import Sections
 
 
 class CreateTaskView(SuperUserPermission, CreateView):
@@ -48,6 +48,14 @@ class ListTaskView(ListView):
     def get_queryset(self) -> t.Any:
         slug = self.kwargs.get("section_slug", "")
         return SectionTasks.objects.filter(section__slug=slug).all()
+
+    def get_context_data(self, **kwargs: t.Any) -> t.Dict[str, t.Any]:
+
+        context = super().get_context_data(**kwargs)
+        context["section"] = Sections.objects.get(
+            slug=self.kwargs.get("section_slug", "")
+        )
+        return context
 
 
 class DetailTaskView(DetailView):

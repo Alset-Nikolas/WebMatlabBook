@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{% url 'sections:sections_list' %}" class='a_hover link_to_sections_list'>Назад к списку задач</a>
+<a href="{% url 'sections:sections_list' section.discipline.slug %}" class='a_hover link_to_sections_list'>Назад к списку тем</a>
 <div class="section_detail_wrapper">
     <span>Тут будет краткая теория по теме: {{section.title}}!</span>
 </div>

@@ -2,6 +2,9 @@
 
 Платформа для изучения Matlab.
 
+# Идея
+    Сделать сборник задач по Matlab с краткой теорией по темам курса!
+
 # Запуск 
     1. git clone https://github.com/Alset-Nikolas/WebMatlabBook
     2. cd matlab_book
