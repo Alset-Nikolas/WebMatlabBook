@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="disciplines__header flex-between">
+    <a href="{% url 'sections:sections_list' discipline_slug%}" class='a_hover link_to_sections_list mb15'>
+        Назад к списку тем
+    </a>
+</div>
+<div class="flex-center">
+    <h3 class="itndx__title">Статистика:</h3>
+</div>
+
+
+<div class="statistics__wrapper">
+
+    <div class="statistics__table">
+        {% if statistics|length > 0 %}
+        <ul class="flex-between mg_bt_10 statistcs__headers">
+            <li class="statistcs__header_items statistcs__title  statistics_clm-login  statistics_clm flex-center">
+                <p class="statistcs__text">
+                    Логин
+                </p>
+            </li>
+            {% for task_order in order_tasks %}
+            <li class="statistcs__header_items statistcs__title  statistics_clm flex-center">
+                <p class="statistcs__text
+                {% if task_order.is_laba and not task_order.flag %}
+                    bg_grey
+                {% endif %}
+                ">
+                    {{task_order.title}}
+                </p>
+
+            </li>
+            {% endfor %}
+        </ul>
+        <ul>
+            {% for line_table in table %}
+            <li class="statistics__items">
+                <ul class="flex-between">
+                    {% for item in line_table %}
+                    {% if forloop.counter0 == 0 %}
+                    <li class="statistics_clm-login statistics_clm flex-center 
+                    {% if request.user.is_authenticated and item.user.username == request.user.username %}
+                    bg_user_li
+                    {% endif %}
+                    ">
+                        <p class="statistcs__text">
+                            {{item.user.username}}
+                        </p>
+                    </li>
+                    {% else %}
+
+                    <li class="statistics_clm flex-center
+                    
+                    ">
+                        {% if request.user.is_superuser%}
+                        <a href="{% url 'statistics:statistics_update' item.user.username item.task.slug %}"
+                            class="a_hover statistcs__text">
+                            {{item.flag}}
+                        </a>
+                        {% else %}
+                        <p class="statistcs__text 
+                        {% if item.task.is_laba and not item.flag %}
+                        bg_grey
+                        {% elif item.flag %}
+                        bg_green
+                        {% endif %}
+                        ">
+                            {{item.flag}}
+                        </p>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                </ul>
+
+            </li>
+            {% endfor %}
+            {% else %}
+            <div class="flex-center">
+                Раздевол пока нет!
+            </div>
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

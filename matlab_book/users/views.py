@@ -12,6 +12,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from tasks.models import SectionTasks
+from statistic.models import StatisticsUser
 
 
 class LoginUserView(LoginView):
@@ -27,6 +29,8 @@ class RegisterUserView(CreateView):
 
     def form_valid(self, form: RegisterUserForm):
         user = form.save()
+        for task in SectionTasks.objects.all():
+            StatisticsUser.objects.create(user=user, task=task)
         login(self.request, user)
         return redirect("disciplines:disciplines_list")
 

@@ -48,6 +48,8 @@ a {
 .container {
     margin: 0 auto 0 auto;
     max-width: 1200px;
+    min-width: 600px;
+
 }
 
 body {
@@ -128,12 +130,24 @@ h3 {
     margin-right: 15px;
 }
 
+.bg_grey {
+    background: grey;
+}
+
+.bg_green {
+    background: rgb(0, 160, 0);
+}
+
+.bg_user_li {
+    background: yellowgreen;
+
+}
+
 /* main */
 main {
     background: #FFF;
     border-radius: 30px;
     padding: 20px;
-
 }
 
 .main {
@@ -266,7 +280,7 @@ form label {
 }
 
 .task_column-bg {
-    width: 80%;
+    width: calc(80% - 30px);
 }
 
 /* registration */
@@ -284,9 +298,37 @@ form label {
     width: 600px;
 }
 
+
 .form_check_help_text,
 .form_check_help_img {
     margin-bottom: 30px;
+}
+
+/* statistics__wrapper */
+.statistics__wrapper {
+    width: 100%;
+}
+
+
+.statistics_clm {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.statistcs__text {
+    width: 150px;
+    height: 100%;
+    text-align: center;
+}
+
+.statistcs__headers {
+    border-bottom: 1px solid;
+}
+
+.statistics__table {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
 }
 
 @media screen and (max-width: 800px) {
@@ -300,5 +342,14 @@ form label {
 
     .tasks__items {
         padding-bottom: 30px;
+    }
+
+    .task_column-bg {
+        width: calc(70% - 30px);
+    }
+
+    .container {
+        margin-left: 15px;
+        margin-right: 15px;
     }
 }

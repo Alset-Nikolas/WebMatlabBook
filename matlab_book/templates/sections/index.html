@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{% url 'disciplines:disciplines_list' %}" class='a_hover link_to_sections_list mb15'>Назад к списку
-    дисциплин</a>
+<div class="flex-between">
+    <a href="{% url 'disciplines:disciplines_list' %}" class='a_hover link_to_sections_list mb15'>
+        Назад к списку дисциплин
+    </a>
+    <a href="{% url 'statistics:statistics_list' discipline.slug %}" class='a_hover link_to_sections_list mb15'>
+        Статистика
+    </a>
+</div>
+
 <div class="sections__header flex-between">
     <div class="flex-center">
         <h3 class="itndx__title">Темы: {{discipline.title}}</h3>

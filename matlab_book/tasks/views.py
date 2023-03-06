@@ -27,6 +27,12 @@ import time
 import signal
 from threading import Thread
 from sections.models import Sections
+from django.contrib.auth import get_user_model
+from statistic.models import StatisticsUser
+from tasks.models import SectionTasks
+from statistic.models import StatisticsUser
+
+User = get_user_model()
 
 
 class CreateTaskView(SuperUserPermission, CreateView):
@@ -38,6 +44,16 @@ class CreateTaskView(SuperUserPermission, CreateView):
             "tasks:task_list",
             kwargs={"section_slug": self.object.section.slug},
         )
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        data = form.cleaned_data
+        for user in User.objects.all():
+            StatisticsUser.objects.create(
+                user=user,
+                task=get_object_or_404(SectionTasks, slug=data.get("slug")),
+            )
+        return response
 
 
 class ListTaskView(ListView):
@@ -114,9 +130,15 @@ class UpdateTaskView(SuperUserPermission, UpdateView):
             "tasks:task_detail", kwargs={"task_slug": self.object.slug}
         )
 
-    def form_valid(self, form: SectionTaskForm):
-        x = form.save()
-        return super().form_valid(form)
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        data = form.cleaned_data
+        for user in User.objects.all():
+            StatisticsUser.objects.get_or_create(
+                user=user,
+                task=get_object_or_404(SectionTasks, slug=data.get("slug")),
+            )
+        return response
 
 
 class CheckTaskView(UserAuthPermission, View):
